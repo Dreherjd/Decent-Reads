@@ -46,6 +46,18 @@ function isTrunc($text)
 }
 
 /**
+ * truncates the text, but allows more characters than the other one
+ * @param String - the text you want trucated
+ */
+function isTruncBookSynops($text){
+    if (strlen($text) >= 200) {
+        return substr($text,0,197) . "...";
+    } else {
+        return $text;
+    }
+}
+
+/**
  * returns a readable date format
  * @param String - the date you want formatted
  */
@@ -54,6 +66,29 @@ function getDateForDatabase(string $date): string
     $timestamp = strtotime($date);
     $date_formated = date('m/d/y - g:ia', $timestamp);
     return $date_formated;
+}
+
+function getUserNameByUserId($user_id){
+    global $pdo;
+    $query = $pdo->prepare("
+        SELECT
+            user_full_name
+        FROM
+            users
+        WHERE
+            user_id = :user_id
+    ");
+    $result = $query->execute(
+        array(
+            'user_id' => $user_id
+        )
+    );
+    if($result){
+        $user_name = $query->fetch(PDO::FETCH_ASSOC);
+        return $user_name['user_full_name'];
+    } else {
+        return null;
+    }
 }
 
 /**
@@ -84,10 +119,10 @@ function getBookNameByBookId($id){
 }
 
 /**
- * gets the author by author_id
+ * gets the author name by author_id
  * @param int - the author id
  */
-function getAuthorById($author_id){
+function getAuthorNameById($author_id){
     global $pdo;
     $query = $pdo->prepare("
         SELECT
@@ -105,6 +140,29 @@ function getAuthorById($author_id){
     if($result){
         $author = $query->fetch(PDO::FETCH_ASSOC);
         return $author['author_name'];
+    } else {
+        return null;
+    }
+}
+
+function getAuthorRecordByAuthorId($author_id){
+    global $pdo;
+    $query = $pdo->prepare("
+        SELECT
+            *
+        FROM
+            authors
+        WHERE
+            author_id = :author_id
+    ");
+    $result = $query->execute(
+        array(
+            'author_id' => $author_id
+        )
+    );
+    if($result){
+        $author = $query->fetch(PDO::FETCH_ASSOC);
+        return $author;
     } else {
         return null;
     }
@@ -132,6 +190,146 @@ function getAuthorByBookId($book_id){
     if($result){
         $row = $query->fetch(PDO::FETCH_ASSOC);
         return $row['author_id'];
+    } else {
+        return null;
+    }
+}
+
+/**
+ * gets tag name by tag id
+ * @param int - the tag id
+ */
+function getTagNameByTagId($tag_id){
+    global $pdo;
+    $query = $pdo->prepare("
+        SELECT
+            *
+        FROM
+            tags
+        WHERE
+            tag_id = :tag_id
+    ");
+    $result = $query->execute(
+        array(
+            'tag_id' => $tag_id
+        )
+    );
+    if($result){
+        $tag = $query->fetch(PDO::FETCH_ASSOC);
+        return $tag['tag_title'];
+    } else {
+        return null;
+    }
+}
+
+/**
+ * gets list of tags for book by book id
+ * @param int - the book id
+ */
+function getAllTagsForBookByBookId($book_id){
+    global $pdo;
+    $query = $pdo->prepare("
+        SELECT
+            *
+        FROM
+            books_tags
+        WHERE
+            book_id = :book_id
+    ");
+    $result = $query->execute(
+        array(
+            'book_id' => $book_id
+        )
+    );
+    if($result){
+        $tags = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $tags;
+    } else {
+        return null;
+    }
+}
+
+/**
+ * gets the average rating of a book from the reviews table by book id
+ * then rounds it down to two decimal places
+ * @param int - the book id
+ */
+function getAvgRatingByBookId($book_id){
+    global $pdo;
+    $query = $pdo->prepare("
+        SELECT
+            ROUND(avg(book_review_score),1) as avg_score
+        FROM
+            book_reviews
+        WHERE
+            book_id = :book_id
+    ");
+    $result = $query->execute(
+        array(
+            'book_id' => $book_id
+        )
+    );
+    if($result){
+        $avg_score = $query->fetch(PDO::FETCH_ASSOC);
+        return $avg_score['avg_score'];
+    } else {
+        return 0;
+    }
+}
+
+/**
+ * gets reviews related to book id
+ * @param int - the book id
+ */
+function getReviewsByBookId($book_id){
+    global $pdo;
+    $query = $pdo->prepare("
+        SELECT
+            *
+        FROM
+            book_reviews
+        WHERE
+            book_id = :book_id
+            AND book_review_content IS NOT NULL
+    ");
+    $result = $query->execute(
+        array(
+            'book_id' => $book_id
+        )
+    );
+    if($result){
+        $reviews = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $reviews;
+    } else {
+        return null;
+    }
+}
+
+/**
+ * gets reviews related to book id, excluding current user
+ * @param int - the book id
+ */
+function getReviewsByBookIdExcludingCurrentUser($book_id, $user_id){
+    global $pdo;
+    $query = $pdo->prepare("
+        SELECT
+            *
+        FROM
+            book_reviews
+        WHERE
+            book_id = :book_id
+            AND book_review_user_id != :user_id
+            AND book_review_content IS NOT NULL
+    ");
+    $result = $query->execute(
+        array(
+            'book_id' => $book_id,
+            'user_id' => $user_id
+        )
+    );
+    if($result){
+        $reviews = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $reviews;
     } else {
         return null;
     }

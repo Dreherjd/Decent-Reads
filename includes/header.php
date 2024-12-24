@@ -1,3 +1,12 @@
+<?php
+if (isset($_POST['signout'])) {
+    session_destroy();
+    header('location: login.php');
+}
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +18,7 @@
 </head>
 
 <body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-spaced has-shadow" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" href="<?php echo BASE_URL ?>index.php">
                 <img src="<?php echo BASE_URL ?>assets/images/book_icon.png" alt="">
@@ -22,17 +31,19 @@
                 <a class="navbar-item">
                     About
                 </a>
-
-
             </div>
-
             <div class="navbar-end">
-                <div class="navbar-item">
+                <a href="<?php echo BASE_URL ?>views/books.php" class="navbar-item">
+                    View all Books
+                </a>
+                <form action="" method="post">
+                    <button type="submit" name="signout" class="navbar-item">Sign Out</button>
+                </form>
+                <?php if ($_SESSION['user_role'] == 'admin') : ?>
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">
                             Admin
                         </a>
-
                         <div class="navbar-dropdown">
                             <a class="navbar-item">
                                 Add a Book
@@ -45,7 +56,7 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
     </nav>

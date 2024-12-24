@@ -21556,3 +21556,10 @@ has-background-danger.is-hoverable:active {
   width: 50%;
   padding: 10px;
 }
+
+.container2{
+  max-width: none !important;
+  padding-left: 32px;
+  padding-right: 32px;
+  width: 100%;
+}

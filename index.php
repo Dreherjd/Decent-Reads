@@ -1,18 +1,21 @@
 <?php
+session_start();
 require_once("common/common.php");
 require_once("common/dbconnect.php");
-
-#get all posts/reviews to fill out index page
-global $pdo;
-$query = $pdo->query("
+if (isset($_SESSION['user_id'])) {
+    #get all posts/reviews to fill out index page
+    global $pdo;
+    $query = $pdo->query("
     SELECT
         *
     FROM
         book_reviews
 ");
-$result = $query->execute();
-$all_posts = $query->fetchAll(PDO::FETCH_ASSOC);
-
+    $result = $query->execute();
+    $all_posts = $query->fetchAll(PDO::FETCH_ASSOC);
+} else {
+    header('location: login.php');
+}
 ?>
 
 
@@ -22,7 +25,7 @@ $all_posts = $query->fetchAll(PDO::FETCH_ASSOC);
     <?php foreach ($all_posts as $post) : ?>
         <div class="card">
             <header class="card-header">
-                <p class="card-header-title"><a href="#"><?php echo $post['book_review_author'] ?></a>&nbsp;reviewed&nbsp;<i><a href="#"><?php echo getBookNameByBookId($post['book_id']) ?></a></i></p>
+                <p class="card-header-title"><a href="#"><?php echo getUserNameByUserId($post['book_review_user_id']) ?></a>&nbsp;reviewed&nbsp;<i><a href="<?php echo BASE_URL ?>views/view-book.php?book_id=<?php echo $post['book_id'] ?>"><?php echo getBookNameByBookId($post['book_id']) ?></a></i></p>
             </header>
             <div class="card-content">
                 <a style="color: black;" href="<?php echo BASE_URL ?>views/view-post.php?book_review_id=<?php echo $post['book_review_id'] ?>">
@@ -38,8 +41,10 @@ $all_posts = $query->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <footer class="card-footer">
                 <a href="<?php echo BASE_URL ?>views/view-post.php?book_review_id=<?php echo $post['book_review_id'] ?>" class="card-footer-item">View More</a>
+                <?php if($post['book_review_user_id'] == $_SESSION['user_id']): ?>
                 <a href="<?php echo BASE_URL ?>views/post-form.php?book_review_id=<?php echo $post['book_review_id'] ?>" class="card-footer-item">Edit</a>
                 <a href="#" class="card-footer-item">Delete</a>
+                <?php endif; ?>
             </footer>
         </div>
     <?php endforeach; ?>

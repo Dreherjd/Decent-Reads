@@ -1,28 +1,35 @@
 <?php
+session_start();
 require_once("../common/common.php");
 require_once("../common/dbconnect.php");
-require_once('../controllers/post-form.php');
+require_once('../controllers/post-form-controller.php');
 
-$book_title = $review_title = $review_content = $review_complete = $review_score = null;
+if (isset($_SESSION['loggedin'])) {
+    $book_title = $review_title = $review_content = $review_complete = $review_score = null;
+    if(isset($_GET['book_id'])){
+        $book_title = getBookNameByBookId($_GET['book_id']);
+    }
+    if (isset($_GET['book_review_id'])) {
+        $page_state = "edit";
+        $review = getBookReviewByReviewId($_GET['book_review_id']);
+        if ($review) {
+            $book_title = getBookNameByBookId($review['book_id']);
+            $review_title = $review['book_review_title'];
+            $review_content = $review['book_review_content'];
+            $review_complete = $review['complete_or_dnf'];
+            $review_score = $review['book_review_score'];
+        }
+    } else {
+        $page_state = "add";
+    }
 
-if (isset($_GET['book_review_id'])) {
-    $page_state = "edit";
-    $review = getBookReviewByReviewId($_GET['book_review_id']);
-    if($review){
-        $book_title = getBookNameByBookId($review['book_id']);
-        $review_title = $review['book_review_title'];
-        $review_content = $review['book_review_content'];
-        $review_complete = $review['complete_or_dnf'];
-        $review_score = $review['book_review_score'];
+    if (isset($_GET['book_id'])) {
+        $book_id = $_GET['book_id'];
+    } else {
+        #no book id set
     }
 } else {
-    $page_state = "add";
-}
-
-if (isset($_GET['book_id'])) {
-    $book_id = $_GET['book_id'];
-} else {
-    #no book id set
+    header('location: login.php');
 }
 ?>
 
@@ -36,24 +43,21 @@ if (isset($_GET['book_id'])) {
 
 <form action="post">
     <div class="columns">
-        <div class="column">
+        <div class="column is-3">
             <div class="field">
                 <label class="label">Title</label>
                 <div class="control">
-                    <input class="input" value="<?php echo $review_title?>" type="text">
+                    <input class="input" value="<?php echo $review_title ?>" type="text">
                 </div>
             </div>
         </div>
-        <div class="column"></div>
-        <div class="column"></div>
-        <div class="column"></div>
     </div>
     <div class="columns">
         <div class="column">
             <div class="field">
                 <label class="label">Content</label>
                 <div class="control">
-                    <textarea class="textarea"><?php echo $review_content?></textarea>
+                    <textarea class="textarea"><?php echo $review_content ?></textarea>
                 </div>
             </div>
         </div>
