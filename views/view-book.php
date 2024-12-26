@@ -10,6 +10,8 @@ if (isset($_SESSION['loggedin'])) {
         $author = getAuthorRecordByAuthorId($book['author_id']);
         $current_user_review = getCurrentUserReview($_SESSION['user_id'], $book['book_id']);
     }
+    #get the list of tags for the book
+    $list_of_tags = getAllTagsForBookByBookId($_GET['book_id']);
 } else {
     header("location: login.php");
 }
@@ -24,10 +26,20 @@ if (isset($_SESSION['loggedin'])) {
 <section class="hero is-primary is-small">
     <div class="hero-body">
         <p class="title"><?php echo $book['book_title'] ?></p>
-        <p class="subtitle"><?php echo getAuthorNameById($book['author_id']) ?></p>
+        <a href="<?php echo BASE_URL ?>views/view-author.php?author_id=<?php echo $book['author_id'] ?>" class="subtitle"><?php echo getAuthorNameById($book['author_id']) ?></a>
     </div>
 </section>
 <br />
+<small><i>Tags</i></small>
+<div class="tags">
+    <?php foreach ($list_of_tags as $tag) : ?>
+        <span class="tag is-info"><?php echo getTagNameByTagId($tag['tag_id']) ?></span>
+    <?php endforeach; ?>
+    <?php if ($_SESSION['user_role'] == 'admin') : ?>
+        <a href="<?php echo BASE_URL?>views/tags-books.php?book_id=<?php echo $book['book_id']?>" ><span class="tag is-info">Add a Tag</span></a>
+    <?php endif; ?>
+</div>
+<br /><br />
 <nav class="level is-mobile">
     <div class="level-item has-text-centered">
         <div>
@@ -44,17 +56,17 @@ if (isset($_SESSION['loggedin'])) {
     <div class="level-item has-text-centered">
         <div>
             <p class="heading">Avg Rating</p>
-            <?php if(getAvgRatingByBookId($book['book_id']) != 0) : ?>
-            <p class="title"><?php echo getAvgRatingByBookId($book['book_id']) ?> out of 5</p>
+            <?php if (getAvgRatingByBookId($book['book_id']) != 0) : ?>
+                <p class="title"><?php echo getAvgRatingByBookId($book['book_id']) ?> out of 5</p>
             <?php else : ?>
                 <p class="title">No ratings, yet.</p>
-            <?php endif ; ?>
+            <?php endif; ?>
         </div>
     </div>
     <div class="level-item has-text-centered">
         <div>
-            <p class="heading"># of Ratings</p>
-            <p class="title"><?php echo getNumberOfReviewsForBookId($book['book_id']) ?></p>
+            <p class="heading"># of Pages</p>
+            <p class="title"><?php echo $book['number_of_pages'] ?></p>
         </div>
     </div>
 </nav>
@@ -66,7 +78,7 @@ if (isset($_SESSION['loggedin'])) {
 <section class="hero is-small has-background-primary-70">
     <div class="hero-body">
         <p class="title">About the Author</p>
-        <p class="subtitle"><?php echo $author['author_name'] ?></p>
+        <a href="<?php echo BASE_URL ?>views/view-author.php?author_id=<?php echo $author['author_id'] ?>" class="subtitle"><?php echo $author['author_name'] ?></a>
     </div>
 </section>
 <section class="section">
@@ -101,6 +113,12 @@ if (isset($_SESSION['loggedin'])) {
         </div>
         <div class="level-item has-text-centered">
             <div>
+                <p class="heading">Completion Status</p>
+                <p class="title"><?php echo $current_user_review['complete_or_dnf'] ?></p>
+            </div>
+        </div>
+        <div class="level-item has-text-centered">
+            <div>
                 <p class="heading">Rated</p>
                 <p class="title"><?php echo $current_user_review['book_review_score'] ?> out of 5</p>
             </div>
@@ -111,6 +129,13 @@ if (isset($_SESSION['loggedin'])) {
             <?php echo isTruncBookSynops(convertNewLinesToParagraphs($current_user_review['book_review_content'])) ?><a href="<?php echo BASE_URL ?>views/view-post.php?book_review_id=<?php echo $review['book_review_id'] ?>">View More</a>
         </blockquote>
     </div>
+    <br /><br />
+    <div class="columns is-centered">
+    </div>
+    <div class="columns is-centered">
+        <a href="<?php BASE_URL ?>post-form.php?book_id=<?php echo $book['book_id'] ?>&book_review_id=<?php echo $current_user_review['book_review_id'] ?>" class="button is-large is-primary">Edit your review</a>
+    </div>
+    <br /><br />
     <br /><br /><br />
 <?php else : ?>
     <!-- link to write review -->
@@ -120,7 +145,7 @@ if (isset($_SESSION['loggedin'])) {
         </div>
     </div>
     <div class="columns is-centered">
-        <a href="<?php BASE_URL?>post-form.php?book_id=<?php echo $book['book_id'] ?>" class="button is-large is-primary">Write a Review!</a>
+        <a href="<?php BASE_URL ?>post-form.php?book_id=<?php echo $book['book_id'] ?>" class="button is-large is-primary">Write a Review!</a>
     </div>
     <br /><br />
 <?php endif; ?>
@@ -147,6 +172,12 @@ if (isset($_SESSION['loggedin'])) {
                 <div>
                     <p class="heading">Written</p>
                     <p class="title"><?php echo getDateForDatabase($review['book_review_created']) ?></p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered">
+                <div>
+                    <p class="heading">Completion Status</p>
+                    <p class="title"><?php echo $review['complete_or_dnf'] ?></p>
                 </div>
             </div>
             <div class="level-item has-text-centered">

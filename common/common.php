@@ -216,7 +216,11 @@ function getTagNameByTagId($tag_id){
     );
     if($result){
         $tag = $query->fetch(PDO::FETCH_ASSOC);
-        return $tag['tag_title'];
+        if($tag){
+            return $tag['tag_title'];
+        } else {
+            return null;
+        }
     } else {
         return null;
     }
@@ -330,6 +334,51 @@ function getReviewsByBookIdExcludingCurrentUser($book_id, $user_id){
     if($result){
         $reviews = $query->fetchAll(PDO::FETCH_ASSOC);
         return $reviews;
+    } else {
+        return null;
+    }
+}
+
+/**
+ * deletePost
+ * deletes a review based on review id
+ * @param  int $book_review_id
+ * @return void
+ */
+function deletePost($book_review_id){
+    global $pdo;
+    $query = $pdo->prepare("
+        DELETE FROM
+            book_reviews
+        WHERE
+            book_review_id = :book_review_id
+    ");
+    $result = $query->execute(
+        array(
+            'book_review_id' => $book_review_id
+        )
+    );
+    return $result !== false;
+}
+
+function getBookDataByBookId($book_id){
+    global $pdo;
+    $query = $pdo->prepare("
+        SELECT
+            *
+        FROM
+            books
+        WHERE
+            book_id = :book_id
+    ");
+    $result = $query->execute(
+        array(
+            'book_id' => $book_id
+        )
+    );
+    if($result){
+        $book = $query->fetch(PDO::FETCH_ASSOC);
+        return $book;
     } else {
         return null;
     }

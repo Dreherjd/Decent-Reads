@@ -10,9 +10,23 @@ if (isset($_SESSION['user_id'])) {
         *
     FROM
         book_reviews
+    ORDER BY
+        book_review_created DESC
 ");
     $result = $query->execute();
     $all_posts = $query->fetchAll(PDO::FETCH_ASSOC);
+
+
+    if ($_POST) {
+        if (isset($_POST['delete-post'])) {
+            $keys = array_keys($_POST['delete-post']);
+            $delete_post_id = $keys[0];
+            if ($delete_post_id) {
+                deletePost($delete_post_id);
+                header('location:' . BASE_URL . 'index.php');
+            }
+        }
+    }
 } else {
     header('location: login.php');
 }
@@ -33,20 +47,22 @@ if (isset($_SESSION['user_id'])) {
                         <p><strong><?php echo isTrunc($post['book_review_title']) ?></strong></p>
                         <?php echo substr($post['book_review_content'], 0, 250) . "..." ?>
                         <br />
-                        <?php echo ($post['book_review_score']) ? "Rated " . $post['book_review_score'] . " out of 5" : '' ?>
+                        <small><i>Rated <?php echo $post['book_review_score'] ?> out of 5</i></small>
                         <br />
                         <p><?php echo getDateForDatabase($post['book_review_created']) ?> </p>
                     </div>
                 </a>
+                <br />
+                <div class="buttons">
+                    <?php if ($post['book_review_user_id'] == $_SESSION['user_id']): ?>
+                        <a href="<?php echo BASE_URL ?>views/post-form.php?book_review_id=<?php echo $post['book_review_id'] ?>" class="button is-primary is-fullwidth">Edit</a>
+                    <?php endif; ?>
+                    <a href="<?php echo BASE_URL ?>views/view-post.php?book_review_id=<?php echo $post['book_review_id'] ?>" class="button is-primary is-fullwidth">View More</a>
+                </div>
             </div>
-            <footer class="card-footer">
-                <a href="<?php echo BASE_URL ?>views/view-post.php?book_review_id=<?php echo $post['book_review_id'] ?>" class="card-footer-item">View More</a>
-                <?php if($post['book_review_user_id'] == $_SESSION['user_id']): ?>
-                <a href="<?php echo BASE_URL ?>views/post-form.php?book_review_id=<?php echo $post['book_review_id'] ?>" class="card-footer-item">Edit</a>
-                <a href="#" class="card-footer-item">Delete</a>
-                <?php endif; ?>
-            </footer>
         </div>
     <?php endforeach; ?>
+</div>
+
 </div>
 <?php include("includes/footer.php"); ?>

@@ -1,28 +1,5 @@
 <?php 
 
-function getBookDataByBookId($book_id){
-    global $pdo;
-    $query = $pdo->prepare("
-        SELECT
-            *
-        FROM
-            books
-        WHERE
-            book_id = :book_id
-    ");
-    $result = $query->execute(
-        array(
-            'book_id' => $book_id
-        )
-    );
-    if($result){
-        $book = $query->fetch(PDO::FETCH_ASSOC);
-        return $book;
-    } else {
-        return null;
-    }
-}
-
 /**
  * gets the total number of reviews for a book id
  * @param int - the book id

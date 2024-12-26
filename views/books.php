@@ -15,6 +15,10 @@ if (isset($_SESSION['loggedin'])) {
 
 <?php include('../includes/header.php'); ?>
 <br /><br /><br /><br />
+<?php if ($_SESSION['user_role'] == 'admin') : ?>
+    <a href="#" class="button is-primary">Add a Book</a>
+    <br /><br />
+<?php endif; ?>
 <div class="columns">
     <?php foreach ($books as $book) : ?>
         <div class="column is-4">
@@ -31,7 +35,7 @@ if (isset($_SESSION['loggedin'])) {
                         Published <?php echo $book['published_date'] ?>
                         <br />
                         <?php foreach (getAllTagsForBookByBookId($book['book_id']) as $tag): ?>
-                            <span class="tag is-primary"><?php echo getTagNameByTagId($tag['tag_id']) ?></span>
+                            <span class="tag is-info"><?php echo getTagNameByTagId($tag['tag_id']) ?></span>
                         <?php endforeach; ?>
                     </div>
                 </div>

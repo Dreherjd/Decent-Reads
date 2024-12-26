@@ -1,11 +1,8 @@
 <?php
 if (isset($_POST['signout'])) {
     session_destroy();
-    header('location: login.php');
+    header('location: ' . BASE_URL . ' login.php');
 }
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,14 +42,11 @@ if (isset($_POST['signout'])) {
                             Admin
                         </a>
                         <div class="navbar-dropdown">
-                            <a class="navbar-item">
-                                Add a Book
+                            <a href="<?php echo BASE_URL?>views/authors.php" class="navbar-item">
+                                Authors
                             </a>
-                            <a class="navbar-item">
-                                Add an Author
-                            </a>
-                            <a class="navbar-item">
-                                Add a Tag
+                            <a href="<?php echo BASE_URL ?>views/tags.php" class="navbar-item">
+                                Tags
                             </a>
                         </div>
                     </div>

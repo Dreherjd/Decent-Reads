@@ -12,6 +12,17 @@ if(isset($_SESSION['loggedin'])){
             $review = getBookReviewByReviewId($book_review_id);
         }
     }
+
+    if($_POST){
+        if(isset($_POST['delete-post'])){
+            $keys = array_keys($_POST['delete-post']);
+            $delete_post_id = $keys[0];
+            if($delete_post_id){
+                deletePost($delete_post_id);
+                header('location:' . BASE_URL . 'index.php');
+            }
+        }
+    }
 } else {
     header('location: login.php');
 }
@@ -32,10 +43,14 @@ if(isset($_SESSION['loggedin'])){
     <small><i>Rated <?php echo $review['book_review_score'] ?> out of 5</i></small>
     <p><?php echo convertNewLinesToParagraphs($review['book_review_content']); ?></p>
     <h4>Written By <?php echo getUserNameByUserId($review['book_review_user_id']) ?> - <?php echo getDateForDatabase($review['book_review_created']); ?></h4>
+    <?php if($_SESSION['user_id'] == $review['book_review_user_id']) : ?>
     <div class="buttons">
         <a href="<?php echo BASE_URL?>views/post-form.php?book_review_id=<?php echo $review['book_review_id']?>" class="button is-primary">Edit</a>
-        <button class="button is-danger is-light">Delete</button>
+        <form action="" method="post">
+            <input type="submit" class="button is-danger is-light" name="delete-post[<?php echo $review['book_review_id'];?> ?>]" value="Delete">
+        </form>
     </div>
+    <?php endif ;?>
     <h2>Comments</h2>
     <p>{comment form}</p>
 
