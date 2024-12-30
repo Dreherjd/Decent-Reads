@@ -32,6 +32,8 @@ function getCommentsByReviewId($book_review_id){
             comments
         WHERE
             post_id = :book_review_id
+        ORDER BY
+            created DESC
     ");
     $result = $query->execute(
         array(

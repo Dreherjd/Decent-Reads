@@ -7,8 +7,7 @@ if (isset($_SESSION['loggedin'])) {
     if(!empty($_POST)){
         $comment_content = $_POST['comment_content'];
         addComment($book_review_id, $comment_content, $_SESSION['user_id']);
-        // header_remove();
-        // header('location:' . BASE_URL . 'views/view-post.php?book_review_id=' . $book_review_id);
+        echo("<meta http-equiv='refresh' content='1'>");
     }
 } else {
     header('location:' . BASE_URL . 'login.php');

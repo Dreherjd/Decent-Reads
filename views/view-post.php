@@ -27,10 +27,10 @@ if (isset($_SESSION['loggedin'])) {
                 header('location:' . BASE_URL . 'index.php');
             }
         }
-        if(isset($_POST['delete-comment'])){
+        if (isset($_POST['delete-comment'])) {
             $keys = array_keys($_POST['delete-comment']);
             $delete_comment_id = $keys[0];
-            if($delete_comment_id){
+            if ($delete_comment_id) {
                 deleteComment($delete_comment_id);
                 header('location:' . BASE_URL . 'views/view-post.php?book_review_id=' . $book_review_id);
             }
@@ -68,11 +68,12 @@ if (isset($_SESSION['loggedin'])) {
             </form>
         </div>
     <?php endif; ?>
-    <h2>Comments</h2>
-    <h4>Add Your Thoughts!</h4>
+    <h3>Add Your Thoughts!</h3>
     <?php include 'comment-form.php' ?>
     <br /><br />
-    <h4>Here's what other people are saying about <?php echo getBookNameByBookId($book_id) ?></h4>
+    <?php if ($comments) : ?>
+        <h4>Here's what people are saying about <?php echo ($_SESSION['user_id'] == $review['book_review_user_id']) ? "your" : "this" ?> review</h4>
+    <?php endif; ?>
 </div>
 <?php foreach ($comments as $comment) : ?>
     <article class="message is-primary">
@@ -81,7 +82,7 @@ if (isset($_SESSION['loggedin'])) {
             <?php if ($_SESSION['user_id'] == $comment['author']) : ?>
                 <form action="" method="post">
                     <input type="hidden" name="comment_id" value="<?php echo $comment['comment_id'] ?>">
-                    <input type="submit" name="delete-comment[<?php echo $comment['comment_id']?>]" value="Delete" class="button is-danger">
+                    <input type="submit" name="delete-comment[<?php echo $comment['comment_id'] ?>]" value="Delete" class="button is-danger">
                 </form>
             <?php endif; ?>
 

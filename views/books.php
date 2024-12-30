@@ -19,9 +19,9 @@ if (isset($_SESSION['loggedin'])) {
     <a href="#" class="button is-primary">Add a Book</a>
     <br /><br />
 <?php endif; ?>
-<div class="columns">
+<div class="columns is-multiline">
     <?php foreach ($books as $book) : ?>
-        <div class="column is-4">
+        <div class="column is-one-third">
             <div class="card">
                 <a href="#">
                     <header class="card-header">
