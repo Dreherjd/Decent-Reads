@@ -1,7 +1,7 @@
 <?php
 if (isset($_POST['signout'])) {
     session_destroy();
-    header('location: ' . BASE_URL . ' login.php');
+    header('location: ' . BASE_URL . 'login.php');
 }
 ?>
 <!DOCTYPE html>

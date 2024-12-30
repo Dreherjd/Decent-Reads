@@ -36,7 +36,7 @@ if (isset($_SESSION['loggedin'])) {
         <span class="tag is-info"><?php echo getTagNameByTagId($tag['tag_id']) ?></span>
     <?php endforeach; ?>
     <?php if ($_SESSION['user_role'] == 'admin') : ?>
-        <a href="<?php echo BASE_URL?>views/tags-books.php?book_id=<?php echo $book['book_id']?>" ><span class="tag is-info">Add a Tag</span></a>
+        <a href="<?php echo BASE_URL ?>views/tags-books.php?book_id=<?php echo $book['book_id'] ?>"><span class="tag is-info">Add a Tag</span></a>
     <?php endif; ?>
 </div>
 <br /><br />
@@ -91,12 +91,19 @@ if (isset($_SESSION['loggedin'])) {
 <?php if (checkIfCurrentUserHasReview($_SESSION['user_id'], $book['book_id'])): ?>
     <section class="hero is-small has-background-primary-70">
         <div class="hero-body">
-            <p class="title">Your Review</p>
+            <p class="title is-centered">Your Review</p>
         </div>
     </section>
     <br />
-    <div class="content centered">
-        <h2><?php echo $current_user_review['book_review_title'] ?></h2>
+
+    <div class="columns is-mobile is-centered">
+        <div class="column is-half">
+            <p class="bd-notification is-primary">
+            <div class="content">
+                <h1 class="has-text-centered is-underlined"><?php echo $current_user_review['book_review_title'] ?></h1>
+            </div>
+            </p>
+        </div>
     </div>
     <nav class="level is-mobile">
         <div class="level-item has-text-centered">
@@ -131,8 +138,6 @@ if (isset($_SESSION['loggedin'])) {
     </div>
     <br /><br />
     <div class="columns is-centered">
-    </div>
-    <div class="columns is-centered">
         <a href="<?php BASE_URL ?>post-form.php?book_id=<?php echo $book['book_id'] ?>&book_review_id=<?php echo $current_user_review['book_review_id'] ?>" class="button is-large is-primary">Edit your review</a>
     </div>
     <br /><br />
@@ -158,8 +163,14 @@ if (isset($_SESSION['loggedin'])) {
     </section>
     <br />
     <?php foreach ($reviews as $review) : ?>
-        <div class="content centered">
-            <h2><?php echo $review['book_review_title'] ?></h2>
+        <div class="columns is-mobile is-centered">
+            <div class="column is-half">
+                <p class="bd-notification is-primary">
+                <div class="content">
+                    <h1 class="has-text-centered is-underlined"><?php echo $review['book_review_title'] ?></h1>
+                </div>
+                </p>
+            </div>
         </div>
         <nav class="level is-mobile">
             <div class="level-item has-text-centered">

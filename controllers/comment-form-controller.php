@@ -25,6 +25,28 @@ function addComment($review_id, $comment_content, $comment_author){
     }
 }
 
+function editComment($comment_id, $comment_content){
+    global $pdo;
+    $query = $pdo->prepare("
+        UPDATE
+            comments
+        SET
+            comment_content = :comment_content
+        WHERE
+            comment_id = :comment_id
+    ");
+    $result = $query->execute(
+        array(
+            'comment_content' => $comment_content,
+            'comment_id' => $comment_id
+        )
+    );
+    if(!$result){
+        throw new Exception("error updating comment");
+    }
+    return $comment_id;
+}
+
 
 
 ?>

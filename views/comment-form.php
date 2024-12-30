@@ -4,10 +4,21 @@ require_once("../common/dbconnect.php");
 require_once("../controllers/comment-form-controller.php");
 $comment_content = null;
 if (isset($_SESSION['loggedin'])) {
-    if(!empty($_POST)){
-        $comment_content = $_POST['comment_content'];
-        addComment($book_review_id, $comment_content, $_SESSION['user_id']);
-        echo("<meta http-equiv='refresh' content='1'>");
+    if (!empty($_POST)) {
+        if ($_POST['comment_comment'] && !$_POST['comment_id']) {
+            #add
+            $comment_content = $_POST['comment_content'];
+            addComment($book_review_id, $comment_content, $_SESSION['user_id']);
+            echo ("<meta http-equiv='refresh' content='1'>");
+        } else {
+            #edit
+            if (!empty($_GET)) {
+                $comment_id = $_GET['comment_id'];
+                $comment_content = $_GET['comment_content'];
+                editComment($comment_id, $comment_content);
+                echo ("<meta http-equiv='refresh' content='1'>");
+            }
+        }
     }
 } else {
     header('location:' . BASE_URL . 'login.php');
