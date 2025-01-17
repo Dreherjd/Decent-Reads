@@ -4,7 +4,6 @@ session_start();
 require_once("common/common.php");
 require_once("common/dbconnect.php");
 global $pdo;
-echo phpinfo();
 if (isset($_POST['signin'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
