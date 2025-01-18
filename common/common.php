@@ -7,8 +7,8 @@ function getRightNowSqlDate(){
 }
 
 /**
- * @param String - the html you'd like escaped
- * @return String - the escaped string
+ * @param string - the html you'd like escaped
+ * @return string - the escaped string
  */
 function escapeHTML($html){
     return htmlspecialchars($html, ENT_HTML5, 'UTF-8');
@@ -16,8 +16,8 @@ function escapeHTML($html){
 
 /**
  * Converts new lines entered in a textArea into ptags
- * @param String - the text with new lines
- * @return String - the text with p tags
+ * @param string - the text with new lines
+ * @return string - the text with p tags
  */
 function convertNewLinesToParagraphs($text){
     $escaped = escapeHTML($text);
@@ -26,7 +26,7 @@ function convertNewLinesToParagraphs($text){
 
 /**
  * redirects user to passed in path
- * @param String - the path you wish to have the user redirected to
+ * @param string - the path you wish to have the user redirected to
  */
 function redirect($url){
     echo '<script language="javascript">window.location.href ="'.$url.'"</script>';
@@ -34,7 +34,7 @@ function redirect($url){
 
 /**
  * truncates text based on character count, puts ... at the end
- * @param String - the text you wish to have truncated
+ * @param string - the text you wish to have truncated
  */
 function isTrunc($text)
 {
@@ -47,7 +47,7 @@ function isTrunc($text)
 
 /**
  * truncates the text, but allows more characters than the other one
- * @param String - the text you want trucated
+ * @param string - the text you want trucated
  */
 function isTruncBookSynops($text){
     if (strlen($text) >= 200) {
@@ -59,7 +59,7 @@ function isTruncBookSynops($text){
 
 /**
  * returns a readable date format
- * @param String - the date you want formatted
+ * @param string - the date you want formatted
  */
 function getDateForDatabase(string $date): string
 {
@@ -170,7 +170,7 @@ function getAuthorRecordByAuthorId($author_id){
 
 /**
  * gets author based on book id
- * @param id - the book id
+ * @param int - the book id
  */
 function getAuthorByBookId($book_id){
     global $pdo;
@@ -343,7 +343,7 @@ function getReviewsByBookIdExcludingCurrentUser($book_id, $user_id){
  * deletePost
  * deletes a review based on review id
  * @param  int $book_review_id
- * @return void
+ * @return boolean
  */
 function deletePost($book_review_id){
     global $pdo;
@@ -379,6 +379,23 @@ function getBookDataByBookId($book_id){
     if($result){
         $book = $query->fetch(PDO::FETCH_ASSOC);
         return $book;
+    } else {
+        return null;
+    }
+}
+
+function getAllAuthors(){
+    global $pdo;
+    $query = $pdo->prepare("
+        SELECT
+            *
+        FROM
+            authors
+    ");
+    $result = $query->execute();
+    if($result){
+        $authors = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $authors;
     } else {
         return null;
     }

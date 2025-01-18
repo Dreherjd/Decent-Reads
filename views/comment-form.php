@@ -5,20 +5,10 @@ require_once("../controllers/comment-form-controller.php");
 $comment_content = null;
 if (isset($_SESSION['loggedin'])) {
     if (!empty($_POST)) {
-        if ($_POST['comment_comment'] && !$_POST['comment_id']) {
-            #add
-            $comment_content = $_POST['comment_content'];
-            addComment($book_review_id, $comment_content, $_SESSION['user_id']);
-            echo ("<meta http-equiv='refresh' content='1'>");
-        } else {
-            #edit
-            if (!empty($_GET)) {
-                $comment_id = $_GET['comment_id'];
-                $comment_content = $_GET['comment_content'];
-                editComment($comment_id, $comment_content);
-                echo ("<meta http-equiv='refresh' content='1'>");
-            }
-        }
+        #add
+        $comment_content = $_POST['comment_content'];
+        addComment($book_review_id, $comment_content, $_SESSION['user_id']);
+        echo ("<meta http-equiv='refresh' content='1'>");
     }
 } else {
     header('location:' . BASE_URL . 'login.php');
@@ -31,7 +21,8 @@ if (isset($_SESSION['loggedin'])) {
         <div class="media-content">
             <div class="field">
                 <p class="control">
-                    <textarea class="textarea" name="comment_content" placeholder="Add a comment..."><?php echo $comment_content ?></textarea>
+                    <textarea class="textarea" name="comment_content"
+                        placeholder="Add a comment..."><?php echo $comment_content ?></textarea>
                 </p>
             </div>
             <nav class="level">

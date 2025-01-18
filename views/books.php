@@ -16,7 +16,7 @@ if (isset($_SESSION['loggedin'])) {
 <?php include('../includes/header.php'); ?>
 <br /><br /><br /><br />
 <?php if ($_SESSION['user_role'] == 'admin') : ?>
-    <a href="#" class="button is-primary">Add a Book</a>
+    <a href="<?php echo BASE_URL?>views/add-book.php" class="button is-primary">Add a Book</a>
     <br /><br />
 <?php endif; ?>
 <div class="columns is-multiline">
