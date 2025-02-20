@@ -58,4 +58,5 @@ if (isset($_SESSION['loggedin'])) {
     </div>
 
 </form>
+<br><br><br><br><br><br><br><br>
 <?php include '../includes/footer.php'; ?>
