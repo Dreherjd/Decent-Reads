@@ -40,12 +40,12 @@ if (isset($_SESSION['user_id'])) {
         <div class="column is-centered is-4">
             <div class="card">
                 <header class="card-header">
-                    <p class="card-header-title"><a href="#"><?php echo getUserNameByUserId($post['book_review_user_id']) ?></a>&nbsp;reviewed&nbsp;<i><a href="<?php echo BASE_URL ?>views/view-book.php?book_id=<?php echo $post['book_id'] ?>"><?php echo getBookNameByBookId($post['book_id']) ?></a></i></p>
+                    <p class="card-header-title"><strong><?php echo isTrunc($post['book_review_title']) ?></strong></p>
                 </header>
                 <div class="card-content">
                     <a style="color: black;" href="<?php echo BASE_URL ?>views/view-post.php?book_review_id=<?php echo $post['book_review_id'] ?>">
                         <div class="content">
-                            <p><strong><?php echo isTrunc($post['book_review_title']) ?></strong></p>
+                        <p><a href="#"><?php echo getUserNameByUserId($post['book_review_user_id']) ?></a>&nbsp;reviewed&nbsp;<i><a href="<?php echo BASE_URL ?>views/view-book.php?book_id=<?php echo $post['book_id'] ?>"><?php echo getBookNameByBookId($post['book_id']) ?></a></i></p>
                             <?php echo substr($post['book_review_content'], 0, 250) . "..." ?>
                             <br />
                             <small><i>Rated <?php echo $post['book_review_score'] ?> out of 5</i></small>

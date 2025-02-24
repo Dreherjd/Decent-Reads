@@ -1,6 +1,6 @@
 <?php
-define("BASE_URL", "/decentreads/");
-define("ROOT_PATH", $_SERVER['DOCUMENT_ROOT'] . "/decentreads/");
+define("BASE_URL", "/Decent-Reads/");
+define("ROOT_PATH", $_SERVER['DOCUMENT_ROOT'] . "/Decent-Reads/");
 
 function getRightNowSqlDate(){
     return date('Y-m-d H:i:s');

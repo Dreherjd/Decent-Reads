@@ -15,6 +15,9 @@ if (isset($_POST['signout'])) {
 </head>
 
 <body>
+    <style>
+        <?php include 'assets/styles/bulma.css'; ?>
+    </style>
     <nav class="navbar is-spaced has-shadow" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" href="<?php echo BASE_URL ?>index.php">

@@ -39,10 +39,6 @@ if (isset($_SESSION['loggedin'])) {
 } else {
     header('location: login.php');
 }
-
-
-
-
 ?>
 
 <?php include('../includes/header.php'); ?>
@@ -55,11 +51,12 @@ if (isset($_SESSION['loggedin'])) {
     <br />
     <small><i>Rated <?php echo $review['book_review_score'] ?> out of 5</i></small>
     <p><?php echo convertNewLinesToParagraphs($review['book_review_content']); ?></p>
+    <h3>Tags for <a href="<?php echo BASE_URL ?>views/view-book.php?book_id=<?php echo $review['book_id'] ?>"><?php echo getBookNameByBookId($review['book_id']) ?></a></h3>
     <?php foreach ($tags as $tag) : ?>
-        <span class="tag is-info"><?php echo getTagNameByTagId($tag['tag_id']) ?></span>
+        <a href="<?php echo BASE_URL ?>views/view-books-by-tag.php?tag_id=<?php echo $tag['tag_id'] ?>" class="button is-info is-small"><?php echo getTagNameByTagId($tag['tag_id'])?></a>
     <?php endforeach; ?>
     <br /><br />
-    <h4>Written By <?php echo getUserNameByUserId($review['book_review_user_id']) ?> - <?php echo getDateForDatabase($review['book_review_created']); ?></h4>
+    <h4>Reviewed By <?php echo getUserNameByUserId($review['book_review_user_id']) ?> - <?php echo getDateForDatabase($review['book_review_created']); ?></h4>
     <?php if ($_SESSION['user_id'] == $review['book_review_user_id']) : ?>
         <div class="buttons">
             <a href="<?php echo BASE_URL ?>views/post-form.php?book_review_id=<?php echo $review['book_review_id'] ?>" class="button is-primary">Edit</a>
@@ -68,7 +65,7 @@ if (isset($_SESSION['loggedin'])) {
             </form>
         </div>
     <?php endif; ?>
-    <h3>Add Your Thoughts!</h3>
+    <h3>What did you think?</h3>
     <?php include 'comment-form.php' ?>
     <br /><br />
     <?php if ($comments) : ?>

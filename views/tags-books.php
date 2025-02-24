@@ -27,7 +27,7 @@ if (isset($_SESSION['loggedin'])) {
 
 <div class="content">
     <h3 class="title">
-        Add a Tag to <?php echo $book['book_title']; ?>
+        Add a Tag to: <?php echo $book['book_title']; ?>
     </h3>
 </div>
 
@@ -35,19 +35,12 @@ if (isset($_SESSION['loggedin'])) {
     <?php foreach ($tags as $tag) : ?>
         <form action="" method="post" id="form">
             <input type="hidden" name="tag_id" value="<?php echo $tag['tag_id']?>">
-            <a href="#"><span class="tag is-info" onclick="submit()"><?php echo $tag['tag_title'] ?> - <?php echo $tag['tag_id']?></span></a>
+            <input type="hidden" name="tag_title" value="<?php echo $tag['tag_title']?>">
+            <input type="submit" class="button is-info" value="<?php echo $tag['tag_title']?>">
         </form>
     <?php endforeach; ?>
 </div>
 <div class="buttons">
     <a href="<?php echo BASE_URL ?>views/view-book.php?book_id=<?php echo $book['book_id'] ?>" class="button is-primary">Cancel</a>
 </div>
-
-<script>
-function submit(){
-    let form = document.getElementById("form");
-    form.submit();
-}
-
-</script>
 <?php include '../includes/footer.php'; ?>

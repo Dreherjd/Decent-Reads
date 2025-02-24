@@ -33,10 +33,10 @@ if (isset($_SESSION['loggedin'])) {
 <small><i>Tags</i></small>
 <div class="tags">
     <?php foreach ($list_of_tags as $tag) : ?>
-        <span class="tag is-info"><?php echo getTagNameByTagId($tag['tag_id']) ?></span>
+        <a href="<?php echo BASE_URL ?>views/view-books-by-tag.php?tag_id=<?php echo $tag['tag_id'] ?>" class="button is-info is-small"><?php echo getTagNameByTagId($tag['tag_id'])?></a>
     <?php endforeach; ?>
     <?php if ($_SESSION['user_role'] == 'admin') : ?>
-        <a href="<?php echo BASE_URL ?>views/tags-books.php?book_id=<?php echo $book['book_id'] ?>"><span class="tag is-info">Add a Tag</span></a>
+        <a class="button is-info is-small" href="<?php echo BASE_URL ?>views/tags-books.php?book_id=<?php echo $book['book_id'] ?>">Add a Tag</span></a>
     <?php endif; ?>
 </div>
 <br /><br />

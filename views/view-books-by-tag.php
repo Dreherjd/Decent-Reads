@@ -1,24 +1,30 @@
 <?php
 session_start();
-require_once("../common/common.php");
-require_once("../common/dbconnect.php");
-require_once("../controllers/books-controller.php");
+require_once('../common/common.php');
+require_once('../common/dbconnect.php');
+require_once('../controllers/view-books-by-tag-controller.php');
 if (isset($_SESSION['loggedin'])) {
-    try {
-        $books = getAllBooks();
-    } catch (PDOException) {
-        #error or something
-        die();
+    if (isset($_GET['tag_id'])) {
+        $tag_id = $_GET['tag_id'];
+        $book_ids = getAllBooksByTagId($tag_id);
+        $books = [];
+        foreach($book_ids as $book){
+            $ind_book = getBookDataByBookId($book['book_id']);
+            array_push($books,$ind_book);
+        }
     }
+} else {
+    header('location:' . BASE_URL .'/login.php');
 }
+
 ?>
 
-<?php include('../includes/header.php'); ?>
+
+<?php include '../includes/header.php' ; ?>
 <br /><br /><br /><br />
-<?php if ($_SESSION['user_role'] == 'admin') : ?>
-    <a href="<?php echo BASE_URL?>views/add-book.php" class="button is-primary">Add a Book</a>
-    <br /><br />
-<?php endif; ?>
+<div class="content">
+<h3>Books tagged: <?php echo getTagNameByTagId($_GET['tag_id'])?></h3>
+</div>
 <div class="columns is-multiline">
     <?php foreach ($books as $book) : ?>
         <div class="column is-one-third">
@@ -35,7 +41,7 @@ if (isset($_SESSION['loggedin'])) {
                         Published <?php echo $book['published_date'] ?>
                         <br />
                         <?php foreach (getAllTagsForBookByBookId($book['book_id']) as $tag): ?>
-                            <a href="<?php echo BASE_URL ?>views/view-books-by-tag.php?tag_id=<?php echo $tag['tag_id'] ?>" class="button is-info is-small"><?php echo getTagNameByTagId($tag['tag_id'])?></a>
+                            <span class="tag is-info"><?php echo getTagNameByTagId($tag['tag_id']) ?></span>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -47,4 +53,6 @@ if (isset($_SESSION['loggedin'])) {
         </div>
     <?php endforeach; ?>
 </div>
-<?php include('../includes/footer.php'); ?>
+
+
+<?php include '../includes/footer.php' ; ?>

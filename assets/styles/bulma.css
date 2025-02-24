@@ -1782,7 +1782,7 @@
     --bulma-size-7: 0.75rem;
   }
 }
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --bulma-white-on-scheme-l: 100%;
     --bulma-white-on-scheme: hsla(var(--bulma-white-h), var(--bulma-white-s), var(--bulma-white-on-scheme-l), 1);
@@ -1831,7 +1831,7 @@
     --bulma-shadow-s: 0%;
     --bulma-shadow-l: 100%;
   }
-}
+} */
 [data-theme=light],
 .theme-light {
   --bulma-scheme-h: 221;
