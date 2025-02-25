@@ -91,6 +91,24 @@ function getUserNameByUserId($user_id){
     }
 }
 
+
+function getUserDataByUserId($user_id){
+    global $pdo;
+    $query = $pdo->prepare("
+        select * from users where user_id = :user_id
+    ");
+    $result = $query->execute(
+        array(
+            'user_id' => $user_id
+        )
+    );
+    if($result){
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+        return $user;
+    } else {
+        return null;
+    }
+}
 /**
  * gets a book record associated with the id that's passed
  * @param int - the book id

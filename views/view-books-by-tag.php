@@ -16,10 +16,7 @@ if (isset($_SESSION['loggedin'])) {
 } else {
     header('location:' . BASE_URL .'/login.php');
 }
-
 ?>
-
-
 <?php include '../includes/header.php' ; ?>
 <br /><br /><br /><br />
 <div class="content">

@@ -36,6 +36,9 @@ if (isset($_POST['signout'])) {
                 <a href="<?php echo BASE_URL ?>views/books.php" class="navbar-item">
                     View all Books
                 </a>
+                <a href="<?php echo BASE_URL ?>views/user-profile.php?user_id=<?php echo $_SESSION['user_id']?>" class="navbar-item">
+                    User Profile
+                </a>
                 <form action="" method="post">
                     <button type="submit" name="signout" class="navbar-item">Sign Out</button>
                 </form>

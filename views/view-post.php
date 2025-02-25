@@ -51,7 +51,7 @@ if (isset($_SESSION['loggedin'])) {
     <br />
     <small><i>Rated <?php echo $review['book_review_score'] ?> out of 5</i></small>
     <p><?php echo convertNewLinesToParagraphs($review['book_review_content']); ?></p>
-    <h3>Tags for <a href="<?php echo BASE_URL ?>views/view-book.php?book_id=<?php echo $review['book_id'] ?>"><?php echo getBookNameByBookId($review['book_id']) ?></a></h3>
+    <h3>Tags for: <a href="<?php echo BASE_URL ?>views/view-book.php?book_id=<?php echo $review['book_id'] ?>"><?php echo getBookNameByBookId($review['book_id']) ?></a></h3>
     <?php foreach ($tags as $tag) : ?>
         <a href="<?php echo BASE_URL ?>views/view-books-by-tag.php?tag_id=<?php echo $tag['tag_id'] ?>" class="button is-info is-small"><?php echo getTagNameByTagId($tag['tag_id'])?></a>
     <?php endforeach; ?>
