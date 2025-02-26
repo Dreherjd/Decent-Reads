@@ -100,7 +100,7 @@ if (isset($_SESSION['loggedin'])) {
         <div class="column is-half">
             <p class="bd-notification is-primary">
             <div class="content">
-                <h1 class="has-text-centered is-underlined"><?php echo $current_user_review['book_review_title'] ?></h1>
+                <h1 class="has-text-centered is-underlined"><a href="<?php echo BASE_URL?>/views/view-post.php?book_review_id=<?php echo $current_user_review['book_review_id']?>"><?php echo $current_user_review['book_review_title'] ?></a></h1>
             </div>
             </p>
         </div>
@@ -167,7 +167,7 @@ if (isset($_SESSION['loggedin'])) {
             <div class="column is-half">
                 <p class="bd-notification is-primary">
                 <div class="content">
-                    <h1 class="has-text-centered is-underlined"><?php echo $review['book_review_title'] ?></h1>
+                    <h1 class="has-text-centered is-underlined"><a href="<?php echo BASE_URL ?>/views/view-post.php?book_review_id=<?php echo $review['book_review_id']?>"><?php echo $review['book_review_title'] ?></a></h1>
                 </div>
                 </p>
             </div>

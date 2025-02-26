@@ -15,29 +15,30 @@ if (isset($_SESSION['loggedin'])) {
         $number_of_books_read = getNumberOfBooksReadByUserId($user['user_id']);
         #get the last 4 posts written by passed in user
         $last_few_posts = getLast4PostsByUserId($user['user_id']);
+        #Get all lists for passed in user
+        $lists = getAllListsByUserId($user['user_id']);
+        #Check if user has any lists
+        $user_has_lists = checkUserHasLists($user['user_id']);
     }
-
 } else {
     header('location: ' . BASE_URL . 'login.php');
 }
-
 ?>
-
 <?php include '../includes/header.php'; ?>
 <br /><br /><br /><br />
-
 <div class="columns is-multiline">
     <div class="column is-one-third">
-        <p>A picture</p>
+        <figure class="image is-128x128">
+            <img src="../assets/images/sking.jpg" alt="Stephen King" />
+        </figure>
         <p><?php echo $user['user_f_name'] . " " . $user['user_l_name'] ?> (<?php echo $user['preferred_pronoun'] ?>)
         </p>
         <p><?php echo $user['user_location'] ?></p>
         <br />
         <a href="#" class="button is-primary is-full-width">Edit Your Info</a>
+        <br /><br />
     </div>
     <div class="column is-two-thirds">
-        <?php echo $user['user_bio'] ?>
-        <br /><br />
         <nav class="level">
             <div class="level-item has-text-centered">
                 <div>
@@ -64,13 +65,32 @@ if (isset($_SESSION['loggedin'])) {
                 </div>
             </div>
         </nav>
+        <br /><br />
+        <p><?php echo $user['user_bio'] ?></p>
     </div>
 </div>
 <div class="columns is-multiline">
-    <div class="column is-one-third"></div>
+    <div class="column is-one-third">
+        <div class="content">
+            <?php if ($user_has_lists == true): ?>
+                <?php if ($_SESSION['user_id'] == $user['user_id']): ?>
+                    <h4 class="is-underlined">Your Recent Lists</h4>
+                <?php else: ?>
+                    <h4 class="is-underlined"><?php echo $user['user_f_name'] ?>'s Recent Lists</h>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <h4 class="is-underlined">This person doesn't have any lists!</h4>
+                <?php endif; ?>
+        </div>
+        <ul>
+            <?php foreach ($lists as $list): ?>
+                <li><a href="<?php echo BASE_URL ?>views/view-list.php?list_id=<?php echo $list['list_id']?>"><?php echo $list['list_name'] ?></a></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
     <div class="column is-two-thirds">
         <div class="content">
-            <h3><?php echo $_SESSION['user_id'] == $user['user_id'] ? "Some of " . $user['user_f_name'] . "'s Recent Reviews" : "Some of Your Recent Reviews" ?>
+            <h3><?php echo $_SESSION['user_id'] != $user['user_id'] ? "Some of " . $user['user_f_name'] . "'s Recent Reviews" : "Some of Your Recent Reviews" ?>
             </h3>
         </div>
         <div class="columns is-multiline">

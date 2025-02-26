@@ -71,3 +71,42 @@ function getLast4PostsByUserId($user_id){
         return null;
     }
 }
+
+function getAllListsByUserId($user_id){
+    global $pdo;
+    $query = $pdo->prepare("
+        SELECT * FROM user_lists WHERE user_id = :user_id ORDER BY list_id DESC LIMIT 5
+    ");
+    $result = $query->execute(
+        array(
+            'user_id' => $user_id
+        )
+    );
+    if($result){
+        $lists = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $lists;
+    } else {
+        return null;
+    }
+}
+
+function checkUserHasLists($user_id){
+    global $pdo;
+    $query = $pdo->prepare("
+        SELECT * FROM user_lists WHERE user_id = :user_id
+    ");
+    $result = $query->execute(
+        array(
+            'user_id' => $user_id
+        )
+    );
+    if($result){
+        if($query->fetchColumn()){
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}

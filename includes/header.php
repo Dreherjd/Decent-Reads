@@ -27,28 +27,24 @@ if (isset($_POST['signout'])) {
         </div>
 
         <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item">
-                    About
-                </a>
-            </div>
             <div class="navbar-end">
                 <a href="<?php echo BASE_URL ?>views/books.php" class="navbar-item">
                     View all Books
                 </a>
-                <a href="<?php echo BASE_URL ?>views/user-profile.php?user_id=<?php echo $_SESSION['user_id']?>" class="navbar-item">
+                <a href="<?php echo BASE_URL ?>views/user-profile.php?user_id=<?php echo $_SESSION['user_id'] ?>"
+                    class="navbar-item">
                     User Profile
                 </a>
                 <form action="" method="post">
                     <button type="submit" name="signout" class="navbar-item">Sign Out</button>
                 </form>
-                <?php if ($_SESSION['user_role'] == 'admin') : ?>
+                <?php if ($_SESSION['user_role'] == 'admin'): ?>
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">
                             Admin
                         </a>
                         <div class="navbar-dropdown">
-                            <a href="<?php echo BASE_URL?>views/authors.php" class="navbar-item">
+                            <a href="<?php echo BASE_URL ?>views/authors.php" class="navbar-item">
                                 Authors
                             </a>
                             <a href="<?php echo BASE_URL ?>views/tags.php" class="navbar-item">
