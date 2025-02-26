@@ -1,18 +1,18 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jan 17, 2025 at 05:33 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.4
+-- Host: localhost
+-- Generation Time: Feb 26, 2025 at 10:29 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
 --
- Database: `decentreads`
+-- Database: `decentReads`
 --
 
 -- --------------------------------------------------------
@@ -28,7 +28,7 @@ CREATE TABLE `authors` (
   `author_handle` varchar(50) DEFAULT NULL,
   `author_birth_place` varchar(200) NOT NULL,
   `author_personal_site` varchar(500) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `authors`
@@ -55,7 +55,7 @@ CREATE TABLE `books` (
   `avg_rating` decimal(10,0) DEFAULT NULL,
   `number_of_reviews` int(11) DEFAULT NULL,
   `number_of_ratings` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `books`
@@ -70,6 +70,18 @@ INSERT INTO `books` (`book_id`, `book_title`, `brief_synops`, `author_id`, `publ
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `books_lists`
+--
+
+CREATE TABLE `books_lists` (
+  `id` int(11) NOT NULL,
+  `book_id` int(11) NOT NULL,
+  `list_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `books_tags`
 --
 
@@ -77,15 +89,23 @@ CREATE TABLE `books_tags` (
   `tag_rel_id` int(11) NOT NULL,
   `book_id` int(11) NOT NULL,
   `tag_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `books_tags`
 --
 
 INSERT INTO `books_tags` (`tag_rel_id`, `book_id`, `tag_id`) VALUES
-(24, 2, 1),
-(25, 3, 1);
+(28, 3, 3),
+(29, 3, 14),
+(30, 3, 10),
+(31, 2, 1),
+(32, 2, 11),
+(33, 2, 4),
+(34, 1, 1),
+(35, 1, 17),
+(36, 4, 18),
+(37, 4, 14);
 
 -- --------------------------------------------------------
 
@@ -103,17 +123,17 @@ CREATE TABLE `book_reviews` (
   `book_review_content` varchar(4000) NOT NULL,
   `number_of_likes` int(11) DEFAULT NULL,
   `complete_or_dnf` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `book_reviews`
 --
 
 INSERT INTO `book_reviews` (`book_review_id`, `book_review_created`, `book_review_user_id`, `book_review_score`, `book_id`, `book_review_title`, `book_review_content`, `number_of_likes`, `complete_or_dnf`) VALUES
-(2, '2024-12-23 15:30:06', 2, '3', 3, 'Liked it, Didn\'t love it', 'Update: It was good, but I didn\'t feel the magic I had with the 1st.\r\n\r\nHAPPY RELEASE DAY! (I\'m just a *lot* upset it\'s not about the sister... but it is fully my fault for being oblivious) Hey y\'all it\'s me Christene', NULL, 'Completed it'),
-(6, '2024-12-26 11:18:26', 1, '3', 2, 'Vampires', 'Mauris finibus varius sem, ut vehicula turpis vestibulum eu. Vestibulum sed justo ut lacus maximus laoreet. In in nunc id urna hendrerit euismod in viverra nunc. Ut cursus justo pretium elit mattis gravida. Proin elementum eu dolor non consectetur. Ut a ornare velit. Fusce facilisis eros ante, eu sollicitudin nisl maximus eu. Nulla eu augue et orci volutpat tristique. Aliquam ultricies ullamcorper imperdiet. Quisque ut efficitur justo. Nam fermentum purus sapien, non mollis libero luctus id. Etiam in suscipit turpis. Etiam vehicula porttitor condimentum. Cras placerat purus sit amet gravida rhoncus. Fusce pretium turpis leo, ut lacinia velit pretium nec.\r\n\r\nNam vitae purus eget lorem viverra aliquam vel eget felis. Donec volutpat tempor nibh a placerat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tempus risus id ultrices ultrices. Morbi nisi risus, tempus quis blandit ut, rutrum at lectus. Proin in tincidunt eros. Praesent pharetra, lorem vel eleifend efficitur, ex magna laoreet diam, vitae aliquam leo neque quis ante. Mauris posuere ligula arcu, eget lobortis orci molestie sit amet.\r\n\r\nNulla venenatis odio nibh, sed varius felis hendrerit sit amet. In finibus metus ut scelerisque sodales. Vivamus bibendum semper elit non finibus. Donec et magna dolor. Vivamus ac sagittis est. Aliquam eget laoreet magna, vitae ultrices odio. Nulla fermentum diam a lectus commodo, et pretium elit sagittis. Vivamus at feugiat elit. Nunc sollicitudin urna dui, ac mollis purus eleifend at. Phasellus fermentum libero ac lectus viverra pulvinar.\r\n\r\nCras aliquet sodales magna non finibus. Nulla pretium urna in enim faucibus posuere. Nam dolor lorem, tempor nec pellentesque et, gravida non dolor. Nam id dapibus massa. Praesent a lectus sem. Nam sed felis purus. Duis eu quam in mi auctor tincidunt. Suspendisse nec nulla sit amet velit scelerisque finibus at ac ex. Vivamus sapien ante, vehicula rutrum feugiat non, eleifend sed nisl. Sed viverra, nibh vitae porttitor posuere, nisi lacus feugiat eros, id vehicula ante dolor eu ex. Integer ut neque vel tortor efficitur venenatis. Nulla facilisi. Aenean ut porta erat.', NULL, 'Completed it'),
-(7, '2024-12-30 11:31:53', 1, '2', 3, 'Couldn\'t get into it', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras varius lectus non ipsum aliquet mattis. Nullam luctus non orci sed consequat. Vivamus ac scelerisque odio, eleifend ultrices nisi. Curabitur auctor vulputate quam, vel tincidunt purus sagittis sed. Suspendisse nec orci sit amet ipsum molestie euismod. Phasellus et tempus turpis. Donec quis nunc in erat sodales volutpat a ac diam. Integer ullamcorper sagittis vehicula. Suspendisse a ante molestie, auctor ipsum sit amet, lobortis magna. Donec mattis eleifend nisl non laoreet. Quisque ac sapien purus. Etiam sollicitudin ante eros, eu elementum enim porta sit amet.\r\n\r\nUt semper tellus eu tellus varius rhoncus. Donec posuere eleifend dui et fermentum. Mauris lobortis ex eu varius rhoncus. Nam posuere urna id facilisis vestibulum. Proin id auctor nisi. Nunc congue elit ut arcu facilisis posuere. Quisque faucibus ac libero faucibus lacinia. Nam malesuada vehicula neque at laoreet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aenean diam sapien, iaculis nec elementum vitae, vulputate eu enim. Nam quis gravida nibh.\r\n\r\nSuspendisse feugiat, erat non finibus fringilla, est ante pellentesque ligula, ut ullamcorper velit velit eget odio. In sit amet arcu sapien. Aliquam finibus, justo sed luctus lobortis, ex orci tincidunt nisi, vitae accumsan lectus eros at ante. In hac habitasse platea dictumst. Proin quis tellus eget erat facilisis semper a ac mauris. Pellentesque molestie rhoncus arcu, non maximus leo congue in. Maecenas in posuere tortor, vel dapibus odio. Praesent vel lacus hendrerit, hendrerit ex ac, commodo ipsum. Aliquam hendrerit quam lectus, at volutpat lectus elementum ut. Phasellus hendrerit ipsum libero, in condimentum mi consequat at. Etiam tempor risus nec ipsum viverra dignissim. Morbi tempus, est congue sagittis elementum, felis dui hendrerit turpis, nec malesuada ipsum risus quis tellus. Aenean ac arcu eget nisl tempus ullamcorper. F', NULL, 'DNF'),
-(8, '2024-12-30 11:46:20', 2, '2', 4, 'Needs more plot', 'It’s a very fine line between erotica and 🍇 fantasy, and unfortunately this crossed the line. Especially since the first sex scene was him spiking her drink with magic and her passing out even though she was totally down for anything… Just felt that was a bit unnecessary.\r\n\r\nAlso, the plot was nonexistent and the sex itself was very overwritten to the point where it started to drag and got annoying. 🫣😬 And why did she keep passing out? Homegirl needed her blood pressure checked', NULL, 'Completed it');
+(2, '2024-12-23 15:30:06', 2, 3, 3, 'Liked it, Didn\'t love it', 'Update: It was good, but I didn\'t feel the magic I had with the 1st.\r\n\r\nHAPPY RELEASE DAY! (I\'m just a *lot* upset it\'s not about the sister... but it is fully my fault for being oblivious) Hey y\'all it\'s me Christene', NULL, 'Completed it'),
+(6, '2024-12-26 11:18:26', 1, 3, 2, 'Vampires', 'Mauris finibus varius sem, ut vehicula turpis vestibulum eu. Vestibulum sed justo ut lacus maximus laoreet. In in nunc id urna hendrerit euismod in viverra nunc. Ut cursus justo pretium elit mattis gravida. Proin elementum eu dolor non consectetur. Ut a ornare velit. Fusce facilisis eros ante, eu sollicitudin nisl maximus eu. Nulla eu augue et orci volutpat tristique. Aliquam ultricies ullamcorper imperdiet. Quisque ut efficitur justo. Nam fermentum purus sapien, non mollis libero luctus id. Etiam in suscipit turpis. Etiam vehicula porttitor condimentum. Cras placerat purus sit amet gravida rhoncus. Fusce pretium turpis leo, ut lacinia velit pretium nec.\r\n\r\nNam vitae purus eget lorem viverra aliquam vel eget felis. Donec volutpat tempor nibh a placerat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tempus risus id ultrices ultrices. Morbi nisi risus, tempus quis blandit ut, rutrum at lectus. Proin in tincidunt eros. Praesent pharetra, lorem vel eleifend efficitur, ex magna laoreet diam, vitae aliquam leo neque quis ante. Mauris posuere ligula arcu, eget lobortis orci molestie sit amet.\r\n\r\nNulla venenatis odio nibh, sed varius felis hendrerit sit amet. In finibus metus ut scelerisque sodales. Vivamus bibendum semper elit non finibus. Donec et magna dolor. Vivamus ac sagittis est. Aliquam eget laoreet magna, vitae ultrices odio. Nulla fermentum diam a lectus commodo, et pretium elit sagittis. Vivamus at feugiat elit. Nunc sollicitudin urna dui, ac mollis purus eleifend at. Phasellus fermentum libero ac lectus viverra pulvinar.\r\n\r\nCras aliquet sodales magna non finibus. Nulla pretium urna in enim faucibus posuere. Nam dolor lorem, tempor nec pellentesque et, gravida non dolor. Nam id dapibus massa. Praesent a lectus sem. Nam sed felis purus. Duis eu quam in mi auctor tincidunt. Suspendisse nec nulla sit amet velit scelerisque finibus at ac ex. Vivamus sapien ante, vehicula rutrum feugiat non, eleifend sed nisl. Sed viverra, nibh vitae porttitor posuere, nisi lacus feugiat eros, id vehicula ante dolor eu ex. Integer ut neque vel tortor efficitur venenatis. Nulla facilisi. Aenean ut porta erat.', NULL, 'Completed it'),
+(7, '2024-12-30 11:31:53', 1, 2, 3, 'Couldn\'t get into it', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras varius lectus non ipsum aliquet mattis. Nullam luctus non orci sed consequat. Vivamus ac scelerisque odio, eleifend ultrices nisi. Curabitur auctor vulputate quam, vel tincidunt purus sagittis sed. Suspendisse nec orci sit amet ipsum molestie euismod. Phasellus et tempus turpis. Donec quis nunc in erat sodales volutpat a ac diam. Integer ullamcorper sagittis vehicula. Suspendisse a ante molestie, auctor ipsum sit amet, lobortis magna. Donec mattis eleifend nisl non laoreet. Quisque ac sapien purus. Etiam sollicitudin ante eros, eu elementum enim porta sit amet.\r\n\r\nUt semper tellus eu tellus varius rhoncus. Donec posuere eleifend dui et fermentum. Mauris lobortis ex eu varius rhoncus. Nam posuere urna id facilisis vestibulum. Proin id auctor nisi. Nunc congue elit ut arcu facilisis posuere. Quisque faucibus ac libero faucibus lacinia. Nam malesuada vehicula neque at laoreet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aenean diam sapien, iaculis nec elementum vitae, vulputate eu enim. Nam quis gravida nibh.\r\n\r\nSuspendisse feugiat, erat non finibus fringilla, est ante pellentesque ligula, ut ullamcorper velit velit eget odio. In sit amet arcu sapien. Aliquam finibus, justo sed luctus lobortis, ex orci tincidunt nisi, vitae accumsan lectus eros at ante. In hac habitasse platea dictumst. Proin quis tellus eget erat facilisis semper a ac mauris. Pellentesque molestie rhoncus arcu, non maximus leo congue in. Maecenas in posuere tortor, vel dapibus odio. Praesent vel lacus hendrerit, hendrerit ex ac, commodo ipsum. Aliquam hendrerit quam lectus, at volutpat lectus elementum ut. Phasellus hendrerit ipsum libero, in condimentum mi consequat at. Etiam tempor risus nec ipsum viverra dignissim. Morbi tempus, est congue sagittis elementum, felis dui hendrerit turpis, nec malesuada ipsum risus quis tellus. Aenean ac arcu eget nisl tempus ullamcorper. F', NULL, 'DNF'),
+(8, '2024-12-30 11:46:20', 2, 2, 4, 'Needs more plot', 'It’s a very fine line between erotica and 🍇 fantasy, and unfortunately this crossed the line. Especially since the first sex scene was him spiking her drink with magic and her passing out even though she was totally down for anything… Just felt that was a bit unnecessary.\r\n\r\nAlso, the plot was nonexistent and the sex itself was very overwritten to the point where it started to drag and got annoying. 🫣😬 And why did she keep passing out? Homegirl needed her blood pressure checked', NULL, 'Completed it');
 
 -- --------------------------------------------------------
 
@@ -127,7 +147,7 @@ CREATE TABLE `comments` (
   `comment_content` varchar(2000) NOT NULL,
   `author` varchar(50) NOT NULL,
   `created` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `comments`
@@ -146,7 +166,7 @@ INSERT INTO `comments` (`comment_id`, `post_id`, `comment_content`, `author`, `c
 
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -163,7 +183,7 @@ CREATE TABLE `posts` (
   `created` datetime NOT NULL,
   `type` varchar(20) NOT NULL,
   `author` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `posts`
@@ -181,7 +201,7 @@ INSERT INTO `posts` (`id`, `title`, `content`, `created`, `type`, `author`) VALU
 CREATE TABLE `tags` (
   `tag_id` int(11) NOT NULL,
   `tag_title` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tags`
@@ -194,7 +214,9 @@ INSERT INTO `tags` (`tag_id`, `tag_title`) VALUES
 (10, 'Romance'),
 (11, 'Vampires'),
 (13, 'Bromance'),
-(14, 'Pure Filth');
+(14, 'Pure Filth'),
+(17, 'Post-Apocalyptic'),
+(18, 'Holiday');
 
 -- --------------------------------------------------------
 
@@ -205,18 +227,47 @@ INSERT INTO `tags` (`tag_id`, `tag_title`) VALUES
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `user_full_name` varchar(100) NOT NULL,
+  `user_f_name` varchar(50) NOT NULL,
+  `user_l_name` varchar(50) DEFAULT NULL,
   `user_pw` varchar(100) NOT NULL,
   `user_un` varchar(100) NOT NULL,
-  `user_role` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `user_role` varchar(100) NOT NULL DEFAULT 'user',
+  `preferred_pronoun` varchar(30) DEFAULT NULL,
+  `user_bio` varchar(4000) DEFAULT NULL,
+  `user_location` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `user_full_name`, `user_pw`, `user_un`, `user_role`) VALUES
-(1, 'Justin Dreher', 'admin', 'jdawg', 'admin'),
-(2, 'Darian Spears', 'tucker', 'lovedpirate', 'user');
+INSERT INTO `users` (`user_id`, `user_full_name`, `user_f_name`, `user_l_name`, `user_pw`, `user_un`, `user_role`, `preferred_pronoun`, `user_bio`, `user_location`) VALUES
+(1, 'Justin Dreher', 'Justin', 'Dreher', 'admin', 'jdawg', 'admin', 'He/Him', 'Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this shit while I\'m in a transitional period so I don\'t wanna kill you, I wanna help you. But I can\'t give you this case, it don\'t belong to me. Besides, I\'ve already been through too much shit this morning over this case to hand it over to your dumb ass. ', 'Tampa Bay Area'),
+(2, 'Darian Spears', 'Darian', 'Spears', 'tucker', 'lovedpirate', 'user', 'She/Her', 'Nashville clock masters Hot 100 CD Taylah tour film red lipstick tour Joe Anti-Hero Haim easter egg Willow you need to calm down i had a marvelous time ruining everything casette snow on the beach betty reputation Fearless Anti-Hero the last great american dynasty masters folklore song rock deluxe surprise critics critics Nashville Fearless you need to calm down i had a marvelous time ruining everything tour bonus snow on the beach New York Cardigan Taylor 22 deluxe song blondie co-writer Anti-Hero masters snow on the beach i had a marvelous time ruining everything Aaron Dressner Lover Hot 100 Grammy Long Pong Sessions soft New York London mezzo-soprano tour Long Pong Sessions cottagecore vocalist my tears ricochet rollout Eras Tour Blank Space music video exile twang here\'s how Cruel Summer can still be a single (Taylor\'s Version) guitar signer sexy baby tour film presale the 1 fame Shake it Off (Taylor\'s Version) stadium surprise folklore CD glitter gel pen snake I swear I don\'t love the drama, it loves me CD Target Exclusive', 'Upstate NY');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_lists`
+--
+
+CREATE TABLE `user_lists` (
+  `list_id` int(11) NOT NULL,
+  `list_name` varchar(50) NOT NULL,
+  `list_desc` varchar(1000) DEFAULT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_lists`
+--
+
+INSERT INTO `user_lists` (`list_id`, `list_name`, `list_desc`, `user_id`) VALUES
+(1, 'Read', 'Books I\'ve finished', 1),
+(2, 'DNF', 'Books I could not finish', 1),
+(3, 'Loved Books', 'Books I really liked, and would probably re-read', 1),
+(4, 'Recomended books', 'Books that were recommended to me by either social media or a person irl', 1),
+(5, 'Read', 'Books I\'ve completed', 2);
 
 --
 -- Indexes for dumped tables
@@ -233,6 +284,12 @@ ALTER TABLE `authors`
 --
 ALTER TABLE `books`
   ADD PRIMARY KEY (`book_id`);
+
+--
+-- Indexes for table `books_lists`
+--
+ALTER TABLE `books_lists`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `books_tags`
@@ -277,6 +334,12 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`);
 
 --
+-- Indexes for table `user_lists`
+--
+ALTER TABLE `user_lists`
+  ADD PRIMARY KEY (`list_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -293,10 +356,16 @@ ALTER TABLE `books`
   MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `books_lists`
+--
+ALTER TABLE `books_lists`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `books_tags`
 --
 ALTER TABLE `books_tags`
-  MODIFY `tag_rel_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `tag_rel_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `book_reviews`
@@ -320,11 +389,17 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `tags`
 --
 ALTER TABLE `tags`
-  MODIFY `tag_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `tag_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `user_lists`
+--
+ALTER TABLE `user_lists`
+  MODIFY `list_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
