@@ -29,7 +29,7 @@ function getListDataByListId($list_id){
         )
     );
     if($result){
-        $list_data = $query->fetchAll(PDO::FETCH_ASSOC);
+        $list_data = $query->fetch(PDO::FETCH_ASSOC);
         return $list_data;
     } else {
         return null;
