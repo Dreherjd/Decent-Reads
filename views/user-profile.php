@@ -37,6 +37,24 @@ if (isset($_SESSION['loggedin'])) {
         <br />
         <a href="#" class="button is-primary is-full-width">Edit Your Info</a>
         <br /><br />
+        <div class="content">
+            <?php if ($user_has_lists == true): ?>
+                <?php if ($_SESSION['user_id'] == $user['user_id']): ?>
+                    <h4 class="is-underlined">Your Recent Lists</h4>
+                <?php else: ?>
+                    <h4 class="is-underlined"><?php echo $user['user_f_name'] ?>'s Recent Lists</h>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <h4 class="is-underlined">This person doesn't have any lists!</h4>
+                <?php endif; ?>
+        </div>
+        <ul>
+            <?php foreach ($lists as $list): ?>
+                <li><a
+                        href="<?php echo BASE_URL ?>views/view-list.php?list_id=<?php echo $list['list_id'] ?>"><?php echo $list['list_name'] ?></a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
     </div>
     <div class="column is-two-thirds">
         <nav class="level">
@@ -67,28 +85,7 @@ if (isset($_SESSION['loggedin'])) {
         </nav>
         <br /><br />
         <p><?php echo $user['user_bio'] ?></p>
-    </div>
-</div>
-<div class="columns is-multiline">
-    <div class="column is-one-third">
-        <div class="content">
-            <?php if ($user_has_lists == true): ?>
-                <?php if ($_SESSION['user_id'] == $user['user_id']): ?>
-                    <h4 class="is-underlined">Your Recent Lists</h4>
-                <?php else: ?>
-                    <h4 class="is-underlined"><?php echo $user['user_f_name'] ?>'s Recent Lists</h>
-                    <?php endif; ?>
-                <?php else: ?>
-                    <h4 class="is-underlined">This person doesn't have any lists!</h4>
-                <?php endif; ?>
-        </div>
-        <ul>
-            <?php foreach ($lists as $list): ?>
-                <li><a href="<?php echo BASE_URL ?>views/view-list.php?list_id=<?php echo $list['list_id']?>"><?php echo $list['list_name'] ?></a></li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
-    <div class="column is-two-thirds">
+        <br /><br />
         <div class="content">
             <h3><?php echo $_SESSION['user_id'] != $user['user_id'] ? "Some of " . $user['user_f_name'] . "'s Recent Reviews" : "Some of Your Recent Reviews" ?>
             </h3>
@@ -105,8 +102,7 @@ if (isset($_SESSION['loggedin'])) {
                             <a style="color: black;"
                                 href="<?php echo BASE_URL ?>views/view-post.php?book_review_id=<?php echo $post['book_review_id'] ?>">
                                 <div class="content">
-                                    <p><a
-                                            href="<?php echo BASE_URL ?>views/user-profile.php?user_id=<?php echo $post['book_review_user_id'] ?>"><?php echo getUserNameByUserId($post['book_review_user_id']) ?></a>&nbsp;reviewed&nbsp;<i><a
+                                    <p><?php echo $user['user_f_name'] ?> reviewed&nbsp;<i><a
                                                 href="<?php echo BASE_URL ?>views/view-book.php?book_id=<?php echo $post['book_id'] ?>"><?php echo getBookNameByBookId($post['book_id']) ?></a></i>
                                     </p>
                                     <?php echo substr($post['book_review_content'], 0, 250) . "..." ?>
@@ -117,14 +113,10 @@ if (isset($_SESSION['loggedin'])) {
                                 </div>
                             </a>
                             <br />
-                            <div class="buttons">
-                                <?php if ($post['book_review_user_id'] == $_SESSION['user_id']): ?>
-                                    <a href="<?php echo BASE_URL ?>views/post-form.php?book_review_id=<?php echo $post['book_review_id'] ?>"
-                                        class="button is-primary is-fullwidth">Edit</a>
-                                <?php endif; ?>
+                            <footer class="card-footer">
                                 <a href="<?php echo BASE_URL ?>views/view-post.php?book_review_id=<?php echo $post['book_review_id'] ?>"
-                                    class="button is-primary is-fullwidth">View More</a>
-                            </div>
+                                    class="card-footer-item">View Review</a>
+                            </footer>
                         </div>
                     </div>
                 </div>
